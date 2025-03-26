@@ -1,0 +1,32 @@
+fastapi-backend/venv/
+fastapi-backend/env/
+fastapi-backend/.venv/
+fastapi-backend/.env/
+
+# Python cache files
+fastapi-backend/__pycache__/
+*.pyc
+*.pyo
+
+# Node.js modules
+frontend/node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Log files
+*.log
+
+# IDE and editor files
+.idea/
+*.suo
+*.user
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Sensitive information
+.env
+*.pem
