@@ -6,7 +6,7 @@ from datetime import datetime
 class RestaurantBase(BaseModel):
     name: str
     location: str
-    cuisine_type: str
+    cuisine: str
     description: Optional[str] = None
 
 

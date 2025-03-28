@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
 import {
     Table,
     TableHead,
@@ -69,30 +71,71 @@ const Home = () => {
         description: '',
     });
 
+    // Fetch restaurants from the backend using Axios
+    const fetchRestaurants = async () => {
+        try {
+            const restaurantResponse = await axios.get('http://127.0.0.1:8000/api/get-all-restaurants');
+            console.log("Fetched restaurants:", restaurantResponse.data); // log the fetched data
+            const restaurantsWithRatings = await Promise.all(restaurantResponse.data.map(async (restaurant) => {
+                // Fetch the ratings/reviews for each restaurant
+                const ratingsResponse = await axios.get(`http://127.0.0.1:8000/api/get-ratings/${restaurant.id}`);
+                const ratings = ratingsResponse.data;  // This is an array of reviews
+    
+                // Calculate the average rating (if there are any reviews)
+                const averageRating = ratings.length > 0 
+                    ? (ratings.reduce((acc, review) => acc + review.rating, 0) / ratings.length).toFixed(1)
+                    : 0;
+    
+                // Return the restaurant with the added average rating
+                return {
+                    ...restaurant,
+                    averageRating: averageRating,
+                    reviews: ratings
+                };
+            }));
+            
+            setRestaurants(restaurantsWithRatings);  // Set the new state with restaurants and their ratings
+        } catch (error) {
+            console.error('Error fetching restaurants:', error);
+        }
+    };
+    
+
+    useEffect(() => {
+        fetchRestaurants();
+      }, []);
+
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => {
         setOpenModal(false);
         setNewRestaurant({ name: '', location: '', cuisine: '', description: '' });
     };
 
-    const handleAddRestaurant = () => {
+    const handleAddRestaurant = async () => {
         const { name, location, cuisine, description } = newRestaurant;
         if (!name || !location || !cuisine || !description) {
             alert('Please fill in all fields.');
             return;
         }
 
-        const nextId = restaurants.length + 1;
+        //const nextId = restaurants.length + 1; // <-- We dont really need this Id are auto assigned
         const restaurantToAdd = {
-            id: nextId,
             name,
             location,
-            cuisine,
-            description,
-            rating: 0,
+            cuisine: cuisine,  // Fixing field name
+            description
         };
-        setRestaurants([...restaurants, restaurantToAdd]);
-        handleClose();
+
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/api/add-restaurant', restaurantToAdd);
+            console.log(response.data); // Handle success response
+            setRestaurants([...restaurants, { ...restaurantToAdd, rating: 0 }]);
+            fetchRestaurants();
+            handleClose();
+        } catch (error) {
+            console.error("Error adding restaurant:", error);
+        }
+
     };
 
     const formIsValid =
@@ -185,9 +228,9 @@ const Home = () => {
                             onClick={() => navigate(`/restaurant/${restaurant.id}`)}
                         >
                             <TableCell>{restaurant.name}</TableCell>
-                            <TableCell>{restaurant.rating}</TableCell>
+                            <TableCell>{restaurant.averageRating}</TableCell>
                             <TableCell>{restaurant.location}</TableCell>
-                            <TableCell>{restaurant.cuisine}</TableCell>
+                            <TableCell>{restaurant.cuisine}</TableCell> {/* Change here */}
                         </TableRow>
                     ))}
                     {filteredRestaurants.length === 0 && (
@@ -198,6 +241,7 @@ const Home = () => {
                         </TableRow>
                     )}
                 </TableBody>
+
             </Table>
 
             {/* Modal */}
