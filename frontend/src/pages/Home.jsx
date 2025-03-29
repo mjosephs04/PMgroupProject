@@ -17,7 +17,6 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-
 const Home = () => {
     const [restaurants, setRestaurants] = useState([
         {
@@ -63,7 +62,6 @@ const Home = () => {
     const [openModal, setOpenModal] = useState(false);
     const navigate = useNavigate();
 
-
     const [newRestaurant, setNewRestaurant] = useState({
         name: '',
         location: '',
@@ -74,36 +72,45 @@ const Home = () => {
     // Fetch restaurants from the backend using Axios
     const fetchRestaurants = async () => {
         try {
-            const restaurantResponse = await axios.get('http://127.0.0.1:8000/api/get-all-restaurants');
-            console.log("Fetched restaurants:", restaurantResponse.data); // log the fetched data
-            const restaurantsWithRatings = await Promise.all(restaurantResponse.data.map(async (restaurant) => {
-                // Fetch the ratings/reviews for each restaurant
-                const ratingsResponse = await axios.get(`http://127.0.0.1:8000/api/get-ratings/${restaurant.id}`);
-                const ratings = ratingsResponse.data;  // This is an array of reviews
-    
-                // Calculate the average rating (if there are any reviews)
-                const averageRating = ratings.length > 0 
-                    ? (ratings.reduce((acc, review) => acc + review.rating, 0) / ratings.length).toFixed(1)
-                    : 0;
-    
-                // Return the restaurant with the added average rating
-                return {
-                    ...restaurant,
-                    averageRating: averageRating,
-                    reviews: ratings
-                };
-            }));
-            
-            setRestaurants(restaurantsWithRatings);  // Set the new state with restaurants and their ratings
+            const restaurantResponse = await axios.get(
+                'http://127.0.0.1:8000/api/get-all-restaurants'
+            );
+            console.log('Fetched restaurants:', restaurantResponse.data); // log the fetched data
+            const restaurantsWithRatings = await Promise.all(
+                restaurantResponse.data.map(async (restaurant) => {
+                    // Fetch the ratings/reviews for each restaurant
+                    const ratingsResponse = await axios.get(
+                        `http://127.0.0.1:8000/api/get-ratings/${restaurant.id}`
+                    );
+                    const ratings = ratingsResponse.data; // This is an array of reviews
+
+                    // Calculate the average rating (if there are any reviews)
+                    const averageRating =
+                        ratings.length > 0
+                            ? (
+                                  ratings.reduce((acc, review) => acc + review.rating, 0) /
+                                  ratings.length
+                              ).toFixed(1)
+                            : 0;
+
+                    // Return the restaurant with the added average rating
+                    return {
+                        ...restaurant,
+                        averageRating: averageRating,
+                        reviews: ratings,
+                    };
+                })
+            );
+
+            setRestaurants(restaurantsWithRatings); // Set the new state with restaurants and their ratings
         } catch (error) {
             console.error('Error fetching restaurants:', error);
         }
     };
-    
 
     useEffect(() => {
         fetchRestaurants();
-      }, []);
+    }, []);
 
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => {
@@ -122,20 +129,22 @@ const Home = () => {
         const restaurantToAdd = {
             name,
             location,
-            cuisine: cuisine,  // Fixing field name
-            description
+            cuisine: cuisine, // Fixing field name
+            description,
         };
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/add-restaurant', restaurantToAdd);
+            const response = await axios.post(
+                'http://127.0.0.1:8000/api/add-restaurant',
+                restaurantToAdd
+            );
             console.log(response.data); // Handle success response
             setRestaurants([...restaurants, { ...restaurantToAdd, rating: 0 }]);
             fetchRestaurants();
             handleClose();
         } catch (error) {
-            console.error("Error adding restaurant:", error);
+            console.error('Error adding restaurant:', error);
         }
-
     };
 
     const formIsValid =
@@ -143,7 +152,6 @@ const Home = () => {
         newRestaurant.location &&
         newRestaurant.cuisine &&
         newRestaurant.description.trim();
-
 
     const filteredRestaurants = restaurants.filter(
         (r) =>
@@ -241,7 +249,6 @@ const Home = () => {
                         </TableRow>
                     )}
                 </TableBody>
-
             </Table>
 
             {/* Modal */}

@@ -31,6 +31,7 @@ const RestaurantDetail = () => {
         const fetchRestaurant = async () => {
             try {
                 const response = await axios.get(`http://127.0.0.1:8000/api/get-ratings/${id}`);
+                console.log('Fetched reviews:', response.data); // 👈 Add this
                 setRestaurant(response.data); // Store the fetched restaurant data
             } catch (error) {
                 console.error('Error fetching restaurant:', error);
@@ -54,7 +55,7 @@ const RestaurantDetail = () => {
     }
 
     // Safely check for reviews (ensure it's an array)
-    const reviews = Array.isArray(restaurant.reviews) ? restaurant.reviews : [];
+    const reviews = Array.isArray(restaurant) ? restaurant : [];
 
     const sortedReviews = [...reviews].sort((a, b) =>
         sortOrder === 'asc' ? a.rating - b.rating : b.rating - a.rating

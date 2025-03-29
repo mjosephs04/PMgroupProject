@@ -22,12 +22,14 @@ class RestaurantOut(RestaurantBase):
 
 
 class ReviewBase(BaseModel):
+    name: str
     rating: int
     comment: Optional[str] = None
 
 
 class ReviewOut(ReviewBase):
     id: int
+    restaurant_id: int
 
     class Config:
         orm_mode = True

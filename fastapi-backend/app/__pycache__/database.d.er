@@ -1,0 +1,13 @@
+##[pylyzer] failed /users/sam/desktop/software_project_management/pmgroupproject/fastapi-backend/app/database.py 1743188606 383
+.___v_desugar_1: Never
+.create_engine: Never
+.___v_desugar_2: Never
+.declarative_base: Never
+.___v_desugar_3: Never
+.sessionmaker: Never
+.os: Never
+
+.DATABASE_URL: Never
+.engine: Never
+.SessionLocal: Never
+.Base: Never

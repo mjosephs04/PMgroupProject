@@ -1,0 +1,33 @@
+##[pylyzer] failed /users/sam/desktop/software_project_management/pmgroupproject/fastapi-backend/app/models.py 1743188606 878
+.___v_desugar_1: Never
+.Column: Never
+.Integer: Never
+.String: Never
+.ForeignKey: Never
+.DateTime: Never
+.___v_desugar_2: Never
+.relationship: Never
+.___v_desugar_3: Never
+.datetime: Never
+.___v_desugar_4 = pyimport "database"
+.database = pyimport "database"
+.Base: Never
+.Restaurant: ClassType
+.Restaurant <: Never
+.Restaurant.__tablename__: {"restaurants"}
+.Restaurant.id: Never
+.Restaurant.name: Never
+.Restaurant.location: Never
+.Restaurant.cuisine: Never
+.Restaurant.description: Never
+.Restaurant.reviews: Never
+
+.Review: ClassType
+.Review <: Never
+.Review.__tablename__: {"reviews"}
+.Review.id: Never
+.Review.restaurant_id: Never
+.Review.rating: Never
+.Review.comment: Never
+.Review.restaurant: Never
+

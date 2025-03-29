@@ -1,0 +1,30 @@
+##[pylyzer] failed /users/sam/desktop/software_project_management/pmgroupproject/fastapi-backend/app/schemas.py 1743188606 523
+.___v_desugar_1: Never
+.BaseModel: Never
+.___v_desugar_2: Never
+.Optional: Never
+.___v_desugar_3: Never
+.datetime: Never
+.RestaurantBase: ClassType
+.RestaurantBase <: Never
+.RestaurantBase.cuisine: Str
+.RestaurantBase.location: Str
+.RestaurantBase.name: Str
+.RestaurantBase.description: NoneType or Str
+
+.RestaurantCreate: ClassType
+.RestaurantCreate <: ..schemas.RestaurantBase
+
+.RestaurantOut: ClassType
+.RestaurantOut <: ..schemas.RestaurantBase
+.RestaurantOut.id: Int
+
+.ReviewBase: ClassType
+.ReviewBase <: Never
+.ReviewBase.rating: Int
+.ReviewBase.comment: NoneType or Str
+
+.ReviewOut: ClassType
+.ReviewOut <: ..schemas.ReviewBase
+.ReviewOut.id: Int
+

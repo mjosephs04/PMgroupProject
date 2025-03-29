@@ -44,7 +44,8 @@ def add_rating(restaurant_id: int, review: schemas.ReviewBase, db: Session = Dep
     new_review = models.Review(
         restaurant_id=restaurant_id,
         rating=review.rating,
-        comment=review.comment
+        comment=review.comment,
+        name=review.name
     )
     db.add(new_review)
     db.commit()

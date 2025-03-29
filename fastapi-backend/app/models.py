@@ -21,6 +21,7 @@ class Review(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     restaurant_id = Column(Integer, ForeignKey("restaurants.id"), nullable=False)
+    name = Column(String, nullable=False)
     rating = Column(Integer, nullable=False)
     comment = Column(String)
 
